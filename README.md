@@ -6,7 +6,20 @@ https://www.cytron.io/p-maker-drive-simplifying-h-bridge-motor-driver-for-beginn
 
 ## 事前準備
 
+### Raspberry Pi OS
+
 ```
 $ sudo systemctl enable pigpiod
 $ sudo systemctl start pigpiod
+```
+
+### Linux
+
+- [pygame](https://www.pygame.org/wiki/GettingStarted)
+- [pigpio](https://gpiozero.readthedocs.io/en/stable/remote_gpio.html#preparing-the-control-computer)
+
+## 実行
+
+```
+PIGPIO_ADDR="<RASPBERRY_PI_IP_ADDRESS>" python3 maker_drive_gamepad.py
 ```
