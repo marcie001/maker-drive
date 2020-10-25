@@ -17,6 +17,7 @@ $ sudo systemctl start pigpiod
 
 - [pygame](https://www.pygame.org/wiki/GettingStarted)
 - [pigpio](https://gpiozero.readthedocs.io/en/stable/remote_gpio.html#preparing-the-control-computer)
+- [OpenCV on Wheels](https://github.com/skvark/opencv-python#installation-and-usage)
 
 ## 実行
 

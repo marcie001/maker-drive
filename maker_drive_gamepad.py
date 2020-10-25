@@ -1,6 +1,9 @@
+import cv2
+from numpy import rot90
 from os import getenv
 import pigpio
 import pygame
+import threading
 
 pi = pigpio.pi()
 
@@ -54,31 +57,49 @@ WHITE = pygame.Color("white")
 BLACK = pygame.Color("black")
 
 pygame.init()
-screen = pygame.display.set_mode((500, 700))
+screen = pygame.display.set_mode((640, 600))
 pygame.display.set_caption(f"tank: {getenv('PIGPIO_ADDR')}")
 screen.fill(WHITE)
+pygame.display.flip()
 
 done = False
 
+cap = cv2.VideoCapture(f"http://{getenv('PIGPIO_ADDR')}:8000/stream.mjpg")
+
+
+def play_video():
+    while not done:
+        ret, frame = cap.read()
+        if ret:
+            frame = rot90(frame)
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            sf = pygame.surfarray.make_surface(frame)
+            screen.blit(sf, (0, 100))
+            pygame.display.update((0, 100, 640, 580))
+    cap.release()
+
+
+t = threading.Thread(target=play_video)
+t.start()
+
 tp = TextPrint()
 joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
-prev = ()
 clock = pygame.time.Clock()
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
 
+    screen.fill(WHITE, (0, 0, 640, 100))
+    tp.reset()
     for js in joysticks:
         # ジョイスティックの値は -1 から 1 まで。 0 がセンター。 -1 が上。
         # 軸番号はおそらく 1 が左ジョイスティックの Y、 2 が右ジョイスティックのY
         v = (js.get_axis(1), js.get_axis(2))
-        if prev != v:
-            tp.tprint(screen, f"{v}")
-            prev = v
+        tp.tprint(screen, f"{v}")
         motor_speed(int(-255 * v[0]), int(-255 * v[1]))
 
-    pygame.display.flip()
+    pygame.display.update((0, 0, 640, 100))
     clock.tick(60)
 
 pygame.quit()
