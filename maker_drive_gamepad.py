@@ -63,20 +63,22 @@ done = False
 tp = TextPrint()
 joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
 prev = ()
+clock = pygame.time.Clock()
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
 
-        for js in joysticks:
-            # ジョイスティックの値は -1 から 1 まで。 0 がセンター。 -1 が上。
-            # 軸番号はおそらく 1 が左ジョイスティックの Y、 2 が右ジョイスティックのY
-            v = (js.get_axis(1), js.get_axis(2))
-            if prev != v:
-                tp.tprint(screen, f"{v}")
-                prev = v
-            motor_speed(int(-255 * v[0]), int(-255 * v[1]))
+    for js in joysticks:
+        # ジョイスティックの値は -1 から 1 まで。 0 がセンター。 -1 が上。
+        # 軸番号はおそらく 1 が左ジョイスティックの Y、 2 が右ジョイスティックのY
+        v = (js.get_axis(1), js.get_axis(2))
+        if prev != v:
+            tp.tprint(screen, f"{v}")
+            prev = v
+        motor_speed(int(-255 * v[0]), int(-255 * v[1]))
 
-        pygame.display.flip()
+    pygame.display.flip()
+    clock.tick(60)
 
 pygame.quit()
