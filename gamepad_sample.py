@@ -29,19 +29,21 @@ pygame.display.flip()
 done = False
 
 tp = TextPrint()
+clock = pygame.time.Clock()
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
 
-        tp.reset()
-        screen.fill(WHITE)
-        for i in range(pygame.joystick.get_count()):
-            js = pygame.joystick.Joystick(i)
-            for j in range(js.get_numaxes()):
-                axis = js.get_axis(j)
-                tp.tprint(screen, f"Joystick {i} Axis {j} value: {axis}")
+    tp.reset()
+    screen.fill(WHITE)
+    for i in range(pygame.joystick.get_count()):
+        js = pygame.joystick.Joystick(i)
+        for j in range(js.get_numaxes()):
+            axis = js.get_axis(j)
+            tp.tprint(screen, f"Joystick {i} Axis {j} value: {axis}")
 
-        pygame.display.flip()
+    pygame.display.flip()
+    clock.tick(60)
 
 pygame.quit()
