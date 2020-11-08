@@ -64,19 +64,21 @@ pygame.display.flip()
 
 done = False
 
-cap = cv2.VideoCapture(f"http://{getenv('PIGPIO_ADDR')}:8000/stream.mjpg")
-
 
 def play_video():
     while not done:
-        ret, frame = cap.read()
-        if ret:
-            frame = rot90(frame)
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            sf = pygame.surfarray.make_surface(frame)
-            screen.blit(sf, (0, 100))
-            pygame.display.update((0, 100, 640, 580))
-    cap.release()
+        cap = cv2.VideoCapture(f"http://{getenv('PIGPIO_ADDR')}:8000/stream.mjpg")
+        try:
+            while not done:
+                ret, frame = cap.read()
+                if ret:
+                    frame = rot90(frame)
+                    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                    sf = pygame.surfarray.make_surface(frame)
+                    screen.blit(sf, (0, 100))
+                    pygame.display.update((0, 100, 640, 580))
+        finally:
+            cap.release()
 
 
 t = threading.Thread(target=play_video, daemon=True)
