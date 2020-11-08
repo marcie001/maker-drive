@@ -8,10 +8,36 @@ https://www.cytron.io/p-maker-drive-simplifying-h-bridge-motor-driver-for-beginn
 
 ### Raspberry Pi OS
 
+#### pigpiod の有効化
+
 ```
 $ sudo systemctl enable pigpiod
 $ sudo systemctl start pigpiod
 ```
+
+#### ストリーミングサーバ
+
+1. [Pi Camera のセットアップ](https://projects.raspberrypi.org/en/projects/getting-started-with-picamera)
+2. [Web streaming](https://picamera.readthedocs.io/en/latest/recipes2.html#web-streaming) のコードを `/home/pi/streaming-server/streaming_server.py` に設置
+    - カメラ画像を回転させたいときは `camera.rotation = 90` などとすればよい
+3. 下を `/etc/systemd/system/streaming-server.service` に設置する
+    ```
+    [Unit]
+    Description=Streaming server
+    After=network.target
+
+    [Service]
+    WorkingDirectory=/home/pi/streaming-server
+    ExecStart=/usr/bin/python3 streaming-server.py
+    Restart=on-failure
+    User=pi
+    Group=pi
+
+    [Install]
+    WantedBy=multi-user.target
+    ```
+4. `sudo systemctl enable streaming-server`
+5. `sudo systemctl start streaming-server`
 
 ### Linux
 
