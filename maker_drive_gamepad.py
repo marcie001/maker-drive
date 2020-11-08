@@ -79,7 +79,7 @@ def play_video():
     cap.release()
 
 
-t = threading.Thread(target=play_video)
+t = threading.Thread(target=play_video, daemon=True)
 t.start()
 
 tp = TextPrint()
