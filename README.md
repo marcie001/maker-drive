@@ -48,5 +48,5 @@ $ sudo systemctl start pigpiod
 ## 実行
 
 ```
-PIGPIO_ADDR="<RASPBERRY_PI_IP_ADDRESS>" python3 maker_drive_gamepad.py
+PIGPIO_ADDR="<RASPBERRY_PI_IP_ADDRESS>" python3 maker_drive_gamepad_video.py
 ```
