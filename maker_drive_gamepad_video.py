@@ -1,3 +1,5 @@
+import queue
+
 import cv2
 from numpy import rot90
 from os import getenv
@@ -81,27 +83,50 @@ def play_video():
             cap.release()
 
 
-t = threading.Thread(target=play_video, daemon=True)
-t.start()
+threading.Thread(target=play_video, daemon=True).start()
 
-tp = TextPrint()
+
+def create_debug_funcs():
+    q = queue.Queue()
+    tp = TextPrint()
+
+    def p(text):
+        q.put(text)
+
+    def r():
+        while True:
+            val = q.get()
+            if val is None:
+                break
+            tp.reset()
+            tp.tprint(screen, val)
+            pygame.display.update((0, 0, 640, 100))
+
+    def c():
+        q.put(None)
+
+    return p, r, c
+
+
+debug, render, stop_debug = create_debug_funcs()
+threading.Thread(target=render, daemon=True).start()
+
 joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
 clock = pygame.time.Clock()
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
+            stop_debug()
 
     screen.fill(WHITE, (0, 0, 640, 100))
-    tp.reset()
     for js in joysticks:
         # ジョイスティックの値は -1 から 1 まで。 0 がセンター。 -1 が上。
         # 軸番号はおそらく 1 が左ジョイスティックの Y、 2 が右ジョイスティックのY
         v = (js.get_axis(1), js.get_axis(2))
-        tp.tprint(screen, f"{v}")
+        debug(f"{v}")
         motor_speed(int(-255 * v[0]), int(-255 * v[1]))
 
-    pygame.display.update((0, 0, 640, 100))
     clock.tick(60)
 
 pygame.quit()
