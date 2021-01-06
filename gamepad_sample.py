@@ -42,6 +42,15 @@ while not done:
         for j in range(js.get_numaxes()):
             axis = js.get_axis(j)
             tp.tprint(screen, f"Joystick {i} Axis {j} value: {axis}")
+        for j in range(js.get_numbuttons()):
+            button = js.get_button(j)
+            tp.tprint(screen, f"Joystick {i} Button {j} value: {button}")
+        for j in range(js.get_numhats()):
+            hat = js.get_hat(j)
+            tp.tprint(screen, f"Joystick {i} hat {j} value: {hat}")
+        for j in range(js.get_numballs()):
+            ball = js.get_ball(j)
+            tp.tprint(screen, f"Joystick {i} ball {j} value: {ball}")
 
     pygame.display.flip()
     clock.tick(60)

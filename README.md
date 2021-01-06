@@ -66,7 +66,7 @@ make run
 
 |ファイル名|説明|
 |--|--|
-|gamepad\_sample.py|ゲームパッドのジョイスティックから取得できる値を表示する|
+|gamepad\_sample.py|ゲームパッドから取得できる値を表示する|
 |maker\_drive\_gamepad.py|Elecom JC-U3912TBKの左右のジョイスティックでモータを制御する|
 |maker\_drive\_gamepad\_video.py|maker\_drive\_gamepad.pyにビデオ表示を追加したもの|
 |maker\_drive.py|一定間隔ごとにモータの回転を変更する|
