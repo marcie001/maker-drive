@@ -41,14 +41,25 @@ $ sudo systemctl start pigpiod
 
 ### Linux
 
+下のコマンドで依存パッケージのインストールができる。
+
+```
+make init-venv install-dep
+```
+
+使用しているパッケージは以下なので、手動でインストールしてもよい。
+
 - [pygame](https://www.pygame.org/wiki/GettingStarted)
 - [pigpio](https://gpiozero.readthedocs.io/en/stable/remote_gpio.html#preparing-the-control-computer)
 - [OpenCV on Wheels](https://github.com/skvark/opencv-python#installation-and-usage)
 
+
 ## 実行
 
+Makefile の `PIGPIO_ADDR` を Raspberry Pi のIPやホスト名に変更し、下のコマンドを実行。
+
 ```
-PIGPIO_ADDR="<RASPBERRY_PI_IP_ADDRESS>" python3 maker_drive_gamepad_video.py
+make run
 ```
 
 ## 各ファイルの説明

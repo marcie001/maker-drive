@@ -1,9 +1,6 @@
-import cv2
-from numpy import rot90
 from os import getenv
 import pigpio
 import pygame
-import threading
 
 pi = pigpio.pi()
 
